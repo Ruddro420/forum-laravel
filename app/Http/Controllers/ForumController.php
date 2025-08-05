@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use Inertia\Inertia;
 use App\Models\UserEntry;
+use App\Models\Post;
 
 class ForumController extends Controller
 {
@@ -97,5 +98,61 @@ class ForumController extends Controller
             'message' => 'User entry created successfully',
             'data' => $user
         ], 201);
+    }
+    // get users
+    public function cusers()
+    {
+        $users = UserEntry::with(['category', 'subcategory'])->get();
+        return Inertia::render('UserPanel', ['users' => $users]);
+    }
+    // edit users status
+    public function cuupdate(Request $request, UserEntry $user) // Fix the type hint here
+    {
+        $validated = $request->validate([
+            'status' => 'required|string|in:active,inactive,pending',
+        ]);
+
+        $user->update($validated);
+    }
+    public function cudestroy(UserEntry $user)
+    {
+        $user->delete();
+
+        return back()->with('success', 'User deleted successfully');
+    }
+    // Post Panel
+    public function pstore(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
+            'details' => 'nullable|string',
+            'tag' => 'nullable|string|max:255',
+            'student_id' => 'required|exists:user_entries,id', // your custom user table
+            'status' => 'nullable|in:active,inactive,pending',
+            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,mp4,mov|max:10240',
+            'post_img' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'ex1' => 'nullable|string|max:255',
+            'ex2' => 'nullable|string|max:255',
+        ]);
+
+        // Handle file uploads
+        if ($request->hasFile('file')) {
+            $validated['file'] = $request->file('file')->store('uploads/files', 'public');
+        }
+
+        if ($request->hasFile('post_img')) {
+            $validated['post_img'] = $request->file('post_img')->store('uploads/images', 'public');
+        }
+
+        // Set default status if not provided
+        if (!isset($validated['status'])) {
+            $validated['status'] = 'active';
+        }
+
+        Post::create($validated);
+
+        return redirect()->back()->with('success', 'Post created successfully.');
     }
 }

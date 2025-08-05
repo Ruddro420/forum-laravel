@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -33,5 +34,22 @@ Route::post('/subcategory', [ForumController::class, 'scstore']);
 Route::put('/subcategory/{id}', [ForumController::class, 'scupdate']);
 Route::delete('/subcategory/{id}', [ForumController::class, 'scdestroy']);
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+// User - Panel
+Route::get('/users', [ForumController::class, 'cusers'])->name('getUsers');
+// Update user status
+Route::put('/users/{user}', [ForumController::class, 'cuupdate'])->name('users.update');
+Route::delete('/users/{user}', [ForumController::class, 'cudestroy'])->name('users.destroy');
+// Post - Panel
+Route::prefix('posts')->name('posts.')->group(function () {
+    Route::get('/',       [PostController::class, 'pIndex'])->name('index');
+    Route::get('/create', [PostController::class, 'pCreate'])->name('create');
+    Route::post('/',      [PostController::class, 'pStore'])->name('store');
+    Route::get('/{post}', [PostController::class, 'pShow'])->name('show');
+    Route::get('/{post}/edit', [PostController::class, 'pEdit'])->name('edit');
+    Route::put('/{post}', [PostController::class, 'pUpdate'])->name('update');
+    Route::delete('/{post}', [PostController::class, 'pDestroy'])->name('destroy');
+});
+
+
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

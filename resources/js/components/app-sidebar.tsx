@@ -23,6 +23,16 @@ const mainNavItems: NavItem[] = [
         href: '/subcategory',
         icon: LayoutGrid,
     },
+    {
+        title: 'Users',
+        href: '/users',
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Posts',
+        href: '/posts',
+        icon: LayoutGrid,
+    },
 ];
 
 // const footerNavItems: NavItem[] = [
