@@ -26,7 +26,7 @@ export default defineConfig({
         host: '0.0.0.0', // 👈 Expose to LAN
         port: 5173,
         hmr: {
-            host: '192.168.0.13', // 👈 Your LAN IP here
+            host: '192.168.1.104', // 👈 Your LAN IP here
         },
     },
 });

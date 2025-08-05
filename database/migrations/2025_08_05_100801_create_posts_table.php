@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('sub_category_id')->nullable()->constrained('sub_categories')->onDelete('cascade');
             $table->longText('details')->nullable();
             $table->string('tag')->nullable();
-            $table->foreignId('student_id')->default(1)->constrained('user_entries')->onDelete('cascade');
+            $table->foreignId('student_id')->nullable()->constrained('user_entries')->onDelete('cascade');
             $table->enum('status', ['active', 'inactive', 'pending'])->default('active');
             $table->string('file')->nullable(); // PDF, image, or video file
             $table->string('post_img')->nullable(); // Image thumbnail

@@ -60,7 +60,7 @@ const UserPanel = () => {
                                 </thead>
                                 <tbody>
                                     {users.map((user: any, index: number) => (
-                                        <tr key={user.id} className="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750">
+                                        <tr key={user.id} className="border-t dark:border-gray-700 dark:hover:bg-gray-750">
                                             <td className="px-4 py-2">{index + 1}</td>
                                             <td className="px-4 py-2">
                                                 <div className="flex items-center">
