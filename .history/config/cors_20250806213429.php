@@ -20,10 +20,10 @@ return [
     ],
 
     'allowed_origins' => [
+        '*',
         'http://localhost:3000',
         'http://localhost:5173',
-        'http://localhost:5174',
-        'http://192.168.1.104:8000'
+        'http://192.168.1.104/'
     ],
 
     'allowed_origins_patterns' => [],
