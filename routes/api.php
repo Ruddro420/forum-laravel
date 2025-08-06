@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostViewController;
+use App\Http\Controllers\VoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ForumController;
@@ -44,6 +46,12 @@ Route::get('/posts/student/{student_id}', [PostController::class, 'getByStudent'
 Route::get('/posts/{id}', [PostController::class, 'postshow']);
 // store post
 Route::post('/posts', [PostController::class, 'storePostApi']);
+// recent post
+Route::get('/recentPosts', [PostController::class, 'recent']);
+// featured tag
+Route::get('/tags/featured', [PostController::class, 'featuredTags']);
+// get all data count statistics
+Route::get('/statistics', [PostController::class, 'getStatistics']);
 
 // comment panel
 Route::prefix('comments')->group(function () {
@@ -51,3 +59,10 @@ Route::prefix('comments')->group(function () {
     Route::get('/{id}', [CommentController::class, 'show']);
     Route::delete('/{id}', [CommentController::class, 'destroy']);
 });
+
+// vote panel
+Route::post('/vote', [VoteController::class, 'vote']);
+Route::get('/vote-count/{post_id}', [VoteController::class, 'count']);
+// post view panel
+Route::post('/post/view', [PostViewController::class, 'store']);
+Route::get('/post/views/{post_id}', [PostViewController::class, 'count']);
