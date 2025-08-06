@@ -16,13 +16,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Check email and status == 1
-        $user = UserEntry::where('email', $request->email)
-            ->where(function ($query) {
-                $query->where('status', 1)
-                    ->orWhere('status', 'active');
-            })
-            ->first();
+        $user = UserEntry::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
@@ -43,14 +37,14 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out']);
     }
 
-    public function me($id)
-{
-    $user = UserEntry::find($id);
+    public function me(Request $request)
+    {
+        $user = UserEntry::find(session('user_id'), ['*']);
 
-    if (!$user) {
-        return response()->json(['message' => 'Not logged in'], 401);
+        if (!$user) {
+            return response()->json(['message' => 'Not logged in'], 401);
+        }
+
+        return response()->json($user);
     }
-
-    return response()->json($user);
-}
 }

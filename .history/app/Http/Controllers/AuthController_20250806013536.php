@@ -18,10 +18,7 @@ class AuthController extends Controller
 
         // Check email and status == 1
         $user = UserEntry::where('email', $request->email)
-            ->where(function ($query) {
-                $query->where('status', 1)
-                    ->orWhere('status', 'active');
-            })
+            ->where('status', 1 || 'status', 'active')
             ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -43,14 +40,14 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out']);
     }
 
-    public function me($id)
-{
-    $user = UserEntry::find($id);
+    public function me(Request $request)
+    {
+        $user = UserEntry::find(session('user_id'), ['*']);
 
-    if (!$user) {
-        return response()->json(['message' => 'Not logged in'], 401);
+        if (!$user) {
+            return response()->json(['message' => 'Not logged in'], 401);
+        }
+
+        return response()->json($user);
     }
-
-    return response()->json($user);
-}
 }

@@ -29,7 +29,7 @@ Route::post('/user-entry', [ForumController::class, 'ustore']);
 // User Authentication
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
-Route::get('/me/{id}', [AuthController::class, 'me']);
+Route::get('/me', [AuthController::class, 'me']);
 // get api all post
 Route::get('/posts', [PostController::class, 'getPostApi']);
 // get api by category

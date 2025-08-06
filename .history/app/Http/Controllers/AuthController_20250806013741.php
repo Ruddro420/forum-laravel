@@ -44,13 +44,13 @@ class AuthController extends Controller
     }
 
     public function me($id)
-{
-    $user = UserEntry::find($id);
+    {
+        $user = UserEntry::find($id)->get();
 
-    if (!$user) {
-        return response()->json(['message' => 'Not logged in'], 401);
+        if (!$user) {
+            return response()->json(['message' => 'Not logged in'], 401);
+        }
+
+        return response()->json($user);
     }
-
-    return response()->json($user);
-}
 }
