@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ForumController;
@@ -49,6 +50,11 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::put('/{post}', [PostController::class, 'pUpdate'])->name('update');
     Route::delete('/{post}', [PostController::class, 'pDestroy'])->name('destroy');
 });
+// Books Panel
+Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::post('/books', [BookController::class, 'store'])->name('books.store');      // add this
+Route::post('/books/{id}/status', [BookController::class, 'updateStatus'])->name('books.updateStatus');
+Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
 
 require __DIR__ . '/settings.php';

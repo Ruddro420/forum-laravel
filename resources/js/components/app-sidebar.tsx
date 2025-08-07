@@ -33,6 +33,11 @@ const mainNavItems: NavItem[] = [
         href: '/posts',
         icon: LayoutGrid,
     },
+    {
+        title: 'Books',
+        href: '/books',
+        icon: LayoutGrid,
+    },
 ];
 
 // const footerNavItems: NavItem[] = [
