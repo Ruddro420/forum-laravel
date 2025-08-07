@@ -15,6 +15,7 @@ class BookController extends Controller
     // List all books
     public function index()
     {
+        dd('ok');
         $books = Book::with('category', 'subCategory')->get();
         $categories = Category::all();
         $subCategories = SubCategory::all();

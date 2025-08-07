@@ -92,7 +92,7 @@ class PostController extends Controller
         $post = Post::with([
             'category:id,name',
             'subCategory:id,name',
-            'student',
+            'student:id,name,email',
             'votes',
             'comments.user'
         ])
@@ -116,7 +116,7 @@ class PostController extends Controller
 
     public function byCategory($category_id)
     {
-        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
+        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student:id,name,email'])
             ->where('category_id', $category_id)
             ->where('status', 'active')
             ->latest()
@@ -130,7 +130,7 @@ class PostController extends Controller
 
     public function bySubCategory($sub_category_id)
     {
-        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
+        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student:id,name,email'])
             ->where('sub_category_id', $sub_category_id)
             ->where('status', 'active')
             ->latest()
@@ -152,7 +152,7 @@ class PostController extends Controller
             return response()->json(['success' => false, 'message' => 'Invalid sub_category_id'], 404);
         }
 
-        $query = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
+        $query = Post::with(['category:id,name', 'subCategory:id,name', 'student:id,name,email'])
             ->where('category_id', $category_id)
             ->where('status', 'active');
 
@@ -174,7 +174,7 @@ class PostController extends Controller
             return response()->json(['success' => false, 'message' => 'Invalid student_id'], 404);
         }
 
-        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
+        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student:id,name,email'])
             ->where('student_id', $student_id)
             ->where('status', 'active')
             ->latest()
@@ -191,7 +191,7 @@ class PostController extends Controller
         $post = Post::with([
             'category:id,name',
             'subCategory:id,name',
-            'student',
+            'student:id,name,email',
             'votes',
             'comments.user'
         ])
@@ -251,7 +251,7 @@ class PostController extends Controller
     // recend post
     public function recent()
     {
-        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
+        $post = Post::with(['category:id,name', 'subCategory:id,name', 'student:id,name,email'])
             ->where('status', 'active')
             ->latest()
             ->take(4)
@@ -259,7 +259,7 @@ class PostController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $posts,
+            'data' => $post,
         ]);
     }
     // featured tag

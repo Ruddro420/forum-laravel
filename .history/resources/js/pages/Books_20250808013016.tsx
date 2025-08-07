@@ -60,7 +60,7 @@ const Books = () => {
 
     const handleCreate = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/add/books', {
+        post('/books', {
             onSuccess: () => {
                 reset();
                 setShowCreateForm(false);

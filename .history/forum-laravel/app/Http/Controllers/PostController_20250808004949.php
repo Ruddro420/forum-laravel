@@ -251,6 +251,7 @@ class PostController extends Controller
     // recend post
     public function recent()
     {
+        // dd('ok');
         $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
             ->where('status', 'active')
             ->latest()
@@ -262,6 +263,13 @@ class PostController extends Controller
             'data' => $posts,
         ]);
     }
+
+
+    public function viewUpdatePostData(){
+       return response()->json(['message' => 'Data loaded successfully']);
+    }
+
+
     // featured tag
     public function featuredTags()
     {
@@ -309,4 +317,13 @@ class PostController extends Controller
             ]
         ]);
     }
+
+
+      public function testing(){
+        return response()->json('hello');
+    }
+
+
+
+
 }

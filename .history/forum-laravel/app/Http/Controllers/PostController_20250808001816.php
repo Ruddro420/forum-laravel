@@ -249,8 +249,9 @@ class PostController extends Controller
         ], 201);
     }
     // recend post
-    public function recent()
+    public function testing()
     {
+        dd('ok');
         $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
             ->where('status', 'active')
             ->latest()

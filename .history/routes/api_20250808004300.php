@@ -73,7 +73,4 @@ Route::get('/vote-count/{post_id}', [VoteController::class, 'count']);
 Route::post('/post/view', [PostViewController::class, 'store']);
 Route::get('/post/views/{post_id}', [PostViewController::class, 'count']);
 // book panel
-Route::get('/data/active/books', [BookController::class, 'activeBooks']);
-
-
-// Route::get('/books/testing', [PostController::class, 'testing']);
+// Route::get('/books/active', [BookController::class, 'activeBooks']);

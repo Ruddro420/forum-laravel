@@ -8,7 +8,6 @@ use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-use Illuminate\Support\Str;
 
 class BookController extends Controller
 {
@@ -45,18 +44,13 @@ class BookController extends Controller
 
         if ($request->hasFile('book_file')) {
             $bookFile = $request->file('book_file');
-            $bookFileName = Str::random(20) . '.' . $bookFile->getClientOriginalExtension();
-            $bookFile->move(public_path('books/files'), $bookFileName);
-            $book->book_file = 'books/files/' . $bookFileName;
+            $book->book_file = $bookFile->store('books/files', 'public');
         }
 
         if ($request->hasFile('cover_image')) {
             $coverImage = $request->file('cover_image');
-            $coverImageName = Str::random(20) . '.' . $coverImage->getClientOriginalExtension();
-            $coverImage->move(public_path('books/images'), $coverImageName);
-            $book->cover_image = 'books/images/' . $coverImageName;
+            $book->cover_image = $coverImage->store('books/images', 'public');
         }
-
 
         $book->save();
 
@@ -102,4 +96,5 @@ class BookController extends Controller
             'data' => $books
         ]);
     }
+
 }

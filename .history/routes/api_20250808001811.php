@@ -49,11 +49,7 @@ Route::get('/posts/{id}', [PostController::class, 'postshow']);
 Route::post('/add/posts', [PostController::class, 'storePostApi']);
 // recent post
 Route::get('/recentPosts', [PostController::class, 'recent']);
-
-
-Route::get('/updatePostDataView', [PostController::class, 'viewUpdatePostData']);
-
-
+Route::get('/testing', [PostController::class, 'testing']);
 // featured tag
 Route::get('/tags/featured', [PostController::class, 'featuredTags']);
 // get all data count statistics
@@ -73,7 +69,4 @@ Route::get('/vote-count/{post_id}', [VoteController::class, 'count']);
 Route::post('/post/view', [PostViewController::class, 'store']);
 Route::get('/post/views/{post_id}', [PostViewController::class, 'count']);
 // book panel
-Route::get('/data/active/books', [BookController::class, 'activeBooks']);
-
-
-// Route::get('/books/testing', [PostController::class, 'testing']);
+Route::get('/books/active', [BookController::class, 'activeBooks']);

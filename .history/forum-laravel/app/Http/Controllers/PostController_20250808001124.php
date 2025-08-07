@@ -55,6 +55,7 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
+    
 
     // ✅ Update Post
     public function pUpdate(Request $request, Post $post)
@@ -89,19 +90,12 @@ class PostController extends Controller
     // get api into post table
     public function getPostApi()
     {
-        $post = Post::with([
-            'category:id,name',
-            'subCategory:id,name',
-            'student',
-            'votes',
-            'comments.user'
-        ])
-            ->withCount('views') // ✅ This adds `views_count` to the result
+        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student:id,name,email'])
             ->where('status', 'active')
             ->latest()
             ->get();
 
-        if (!$post) {
+        if (!$posts) {
             return response()->json([
                 'success' => false,
                 'message' => 'Post not found or inactive',
@@ -110,7 +104,7 @@ class PostController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $post,
+            'data' => $posts,
         ]);
     }
 
@@ -188,14 +182,7 @@ class PostController extends Controller
 
     public function postshow($id)
     {
-        $post = Post::with([
-            'category:id,name',
-            'subCategory:id,name',
-            'student',
-            'votes',
-            'comments.user'
-        ])
-            ->withCount('views') // ✅ This adds `views_count` to the result
+        $post = Post::with(['category:id,name', 'subCategory:id,name', 'student:id,name,email'])
             ->where('id', $id)
             ->where('status', 'active')
             ->first();
@@ -247,66 +234,5 @@ class PostController extends Controller
             'message' => 'Post created successfully.',
             'data' => $post,
         ], 201);
-    }
-    // recend post
-    public function recent()
-    {
-        $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
-            ->where('status', 'active')
-            ->latest()
-            ->take(4)
-            ->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => $posts,
-        ]);
-    }
-    // featured tag
-    public function featuredTags()
-    {
-        $posts = Post::where('status', 'active')->pluck('tag'); // Get only the tag field
-
-        $tags = [];
-
-        foreach ($posts as $tagString) {
-            if ($tagString) {
-                $individualTags = array_map('trim', explode(',', $tagString));
-                foreach ($individualTags as $tag) {
-                    if ($tag) {
-                        $tags[$tag] = isset($tags[$tag]) ? $tags[$tag] + 1 : 1;
-                    }
-                }
-            }
-        }
-
-        // Sort tags by frequency (descending)
-        arsort($tags);
-
-        // Get top 10 featured tags (or however many you want)
-        $featured = array_slice($tags, 0, 10, true);
-
-        return response()->json([
-            'success' => true,
-            'tags' => $featured
-        ]);
-    }
-    // get all data count 
-    public function getStatistics()
-    {
-        $totalPosts = Post::count();
-        $totalViews = PostView::count();
-        $totalComments = Comment::count();
-        $totalUsers = UserEntry::count();
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'total_posts' => $totalPosts,
-                'total_views' => $totalViews,
-                'total_comments' => $totalComments,
-                'total_users' => $totalUsers,
-            ]
-        ]);
     }
 }

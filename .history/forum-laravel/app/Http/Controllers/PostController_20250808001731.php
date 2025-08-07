@@ -251,6 +251,7 @@ class PostController extends Controller
     // recend post
     public function recent()
     {
+        dd('ok');
         $posts = Post::with(['category:id,name', 'subCategory:id,name', 'student'])
             ->where('status', 'active')
             ->latest()

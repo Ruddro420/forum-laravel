@@ -8,7 +8,6 @@ use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-use Illuminate\Support\Str;
 
 class BookController extends Controller
 {
