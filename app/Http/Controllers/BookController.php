@@ -22,40 +22,40 @@ class BookController extends Controller
 
 
     public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'category_id' => 'required|exists:categories,id',
-        'sub_category_id' => 'nullable|exists:sub_categories,id',
-        'description' => 'nullable|string',
-        'price' => 'required|numeric',
-        'book_file' => 'nullable|file|mimes:pdf,epub|max:10240',
-        'cover_image' => 'nullable|image|max:5120',
-        'status' => 'required|in:active,inactive,pending',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'book_file' => 'nullable|file|mimes:pdf,epub|max:10240',
+            'cover_image' => 'nullable|image|max:5120',
+            'status' => 'required|in:active,inactive,pending',
+        ]);
 
-    $book = new Book();
-    $book->name = $request->name;
-    $book->category_id = $request->category_id;
-    $book->sub_category_id = $request->sub_category_id;
-    $book->description = $request->description;
-    $book->price = $request->price;
-    $book->status = $request->status;
+        $book = new Book();
+        $book->name = $request->name;
+        $book->category_id = $request->category_id;
+        $book->sub_category_id = $request->sub_category_id;
+        $book->description = $request->description;
+        $book->price = $request->price;
+        $book->status = $request->status;
 
-    if ($request->hasFile('book_file')) {
-        $bookFile = $request->file('book_file');
-        $book->book_file = $bookFile->store('books/files', 'public');
+        if ($request->hasFile('book_file')) {
+            $bookFile = $request->file('book_file');
+            $book->book_file = $bookFile->store('books/files', 'public');
+        }
+
+        if ($request->hasFile('cover_image')) {
+            $coverImage = $request->file('cover_image');
+            $book->cover_image = $coverImage->store('books/images', 'public');
+        }
+
+        $book->save();
+
+        return redirect()->route('books.index')->with('success', 'Book created successfully.');
     }
-
-    if ($request->hasFile('cover_image')) {
-        $coverImage = $request->file('cover_image');
-        $book->cover_image = $coverImage->store('books/images', 'public');
-    }
-
-    $book->save();
-
-    return redirect()->route('books.index')->with('success', 'Book created successfully.');
-}
 
 
 
@@ -63,9 +63,8 @@ class BookController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:published,draft',
+            'status' => 'required',
         ]);
-
         $book = Book::findOrFail($id);
         $book->status = $request->status;
         $book->save();
@@ -84,5 +83,17 @@ class BookController extends Controller
         $book->delete();
 
         return redirect()->back()->with('success', 'Book deleted successfully.');
+    }
+    // get api for books
+    public function activeBooks()
+    {
+        $books = Book::with(['category', 'subCategory'])
+            ->where('status', 'active')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $books
+        ]);
     }
 }

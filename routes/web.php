@@ -53,7 +53,8 @@ Route::prefix('posts')->name('posts.')->group(function () {
 // Books Panel
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
 Route::post('/books', [BookController::class, 'store'])->name('books.store');      // add this
-Route::post('/books/{id}/status', [BookController::class, 'updateStatus'])->name('books.updateStatus');
+Route::put('/books/{id}/status', [BookController::class, 'updateStatus'])->name('books.updateStatus');
+
 Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
 

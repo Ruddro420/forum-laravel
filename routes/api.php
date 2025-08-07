@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostViewController;
 use App\Http\Controllers\VoteController;
@@ -66,3 +67,5 @@ Route::get('/vote-count/{post_id}', [VoteController::class, 'count']);
 // post view panel
 Route::post('/post/view', [PostViewController::class, 'store']);
 Route::get('/post/views/{post_id}', [PostViewController::class, 'count']);
+// book panel
+Route::get('/books/active', [BookController::class, 'activeBooks']);
