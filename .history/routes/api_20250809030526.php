@@ -116,34 +116,8 @@ Route::post('/ably/auth', function (Request $request) {
 });
 
 // Get chat messages between two users
-// Route::get('/chat/messages/{userId}', function ($userId) {
-//     $currentUserId = (int) request()->input('current_user_id', 1);
-
-//     $messages = Message::where(function($q) use ($userId, $currentUserId) {
-//         $q->where('sender_id', $currentUserId)->where('receiver_id', $userId);
-//     })->orWhere(function($q) use ($userId, $currentUserId) {
-//         $q->where('sender_id', $userId)->where('receiver_id', $currentUserId);
-//     })->orderBy('created_at','asc')->get();
-
-//     // Attach sender_name dynamically based on user table
-//     $messages->transform(function($msg) {
-//         $sender = User::find($msg->sender_id) ?: UserEntry::find($msg->sender_id);
-//         $msg->sender_name = $sender ? ($sender->name ?? ($sender->first_name . ' ' . $sender->last_name)) : 'Unknown';
-//         return $msg;
-//     });
-
-//     return response()->json($messages);
-
-// });
-
-
-Route::get('/chat/messages/{userId}', function (Request $request, $userId) {
-    // Get current_user_id from query param; no default fallback
-    $currentUserId = (int) $request->input('current_user_id');
-
-    if (!$currentUserId) {
-        return response()->json(['error' => 'current_user_id parameter is required'], 400);
-    }
+Route::get('/chat/messages/{userId}', function ($userId) {
+    $currentUserId = (int) request()->input('current_user_id');
 
     $messages = Message::where(function($q) use ($userId, $currentUserId) {
         $q->where('sender_id', $currentUserId)->where('receiver_id', $userId);
